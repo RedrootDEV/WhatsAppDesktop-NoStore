@@ -10,7 +10,7 @@ Before running the script, make sure you have the following installed:
 - Selenium: `pip install selenium`
 - BeautifulSoup: `pip install beautifulsoup4`
 
-Also, make sure you have Google Chrome installed, as the script uses the Chrome driver provided by Selenium.
+Also, make sure you have Google Chrome/Chromium installed, as the script uses the Chrome driver provided by Selenium.
 
 ## How to Use the Script
 
@@ -20,7 +20,7 @@ Also, make sure you have Google Chrome installed, as the script uses the Chrome 
 
 3. Run the following command to execute the script: python main.py
 
-The script will open a Chrome browser window in "headless" mode (without a graphical interface) and start the automatic download and installation process of WhatsApp.
+The script will open a Chrome/Chromium browser window in "headless" mode (without a graphical interface) and start the automatic download and installation process of WhatsApp.
 
 4. Wait for the script to complete. During execution, progress messages will be displayed in the console.
 
@@ -30,7 +30,7 @@ The script will open a Chrome browser window in "headless" mode (without a graph
 
 The script follows these steps to download and install WhatsApp:
 
-1. Opens the Chrome browser and visits the website "https://store.rg-adguard.net/".
+1. Opens the Chrome/Chromium browser and visits the website "https://store.rg-adguard.net/".
 
 2. Sends the URL of the WhatsApp download page to the input field on the website.
 
@@ -60,7 +60,7 @@ If you want to contribute to this project, feel free to send pull requests with 
 
 ## Additional Notes
 
-- This script has been developed and tested in a Windows environment using Google Chrome. It may require modifications to work with other operating systems or browsers.
+- This script has been developed and tested in a Windows environment using Google Chrome/Chromium. It may require modifications to work with other operating systems or browsers.
 
 - Please note that the use of this script may be subject to the terms and conditions of the WhatsApp download website. Make sure to comply with legal and ethical requirements when using this script.
 
