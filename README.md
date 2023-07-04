@@ -7,8 +7,12 @@ This repository contains a Python script that automates the process of downloadi
 Before running the script, make sure you have the following installed:
 
 - Python 3.x: https://www.python.org/downloads/
+- Access your prompt and go to the directory where you cloned the source. Then, run `pip install -r requirements.txt`
+<br>Or, if needed:
 - Selenium: `pip install selenium`
 - BeautifulSoup: `pip install beautifulsoup4`
+- Webdriver Manager: `pip install webdriver_manager`
+- Requests: `pip install requests`
 
 Also, make sure you have Google Chrome/Chromium installed, as the script uses the Chrome driver provided by Selenium.
 
