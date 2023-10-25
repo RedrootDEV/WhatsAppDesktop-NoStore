@@ -1,0 +1,11 @@
+C:\Users\Pablo\Desktop\Test\WhatsappUpdater\obj\Debug\WhatsappUpdater.csproj.AssemblyReference.cache
+C:\Users\Pablo\Desktop\Test\WhatsappUpdater\obj\Debug\WhatsappUpdater.csproj.CoreCompileInputs.cache
+C:\Users\Pablo\Desktop\Test\WhatsappUpdater\bin\Debug\WhatsappUpdater.exe.config
+C:\Users\Pablo\Desktop\Test\WhatsappUpdater\bin\Debug\WhatsappUpdater.exe
+C:\Users\Pablo\Desktop\Test\WhatsappUpdater\bin\Debug\WhatsappUpdater.pdb
+C:\Users\Pablo\Desktop\Test\WhatsappUpdater\bin\Debug\HtmlAgilityPack.dll
+C:\Users\Pablo\Desktop\Test\WhatsappUpdater\bin\Debug\HtmlAgilityPack.pdb
+C:\Users\Pablo\Desktop\Test\WhatsappUpdater\bin\Debug\HtmlAgilityPack.xml
+C:\Users\Pablo\Desktop\Test\WhatsappUpdater\obj\Debug\WhatsappUpdater.csproj.CopyComplete
+C:\Users\Pablo\Desktop\Test\WhatsappUpdater\obj\Debug\WhatsappUpdater.exe
+C:\Users\Pablo\Desktop\Test\WhatsappUpdater\obj\Debug\WhatsappUpdater.pdb
