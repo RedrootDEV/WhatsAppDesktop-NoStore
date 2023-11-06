@@ -1,9 +1,10 @@
 ﻿using HtmlAgilityPack;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
+using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -11,8 +12,8 @@ namespace MicrosoftStoreDownloader
 {
     public class MicrosoftStoreApp
     {
+        private readonly string token = "9NKSQGP7F2NH";
         private string response = null;
-        private readonly string token = "9NKSQGP7F2NH"; // Assign your token here
 
         public List<AppxLocation> Locations { get; } = new List<AppxLocation>();
 
@@ -38,13 +39,11 @@ namespace MicrosoftStoreDownloader
                 DownloadMsixBundle(msixBundleLocation);
                 Console.WriteLine("Download complete.");
                 KillWhatsappProcess();
-                // Install the application
+
                 if (InstallAppx(msixBundleLocation.Name))
                 {
                     Console.WriteLine("Installation complete.");
-                    // Delete the downloaded file
-                    File.Delete(msixBundleLocation.Name);
-                    // Register the new version
+                    DeleteMsixBundle(msixBundleLocation.Name);
                     RegisterVersion(version);
                 }
                 else
@@ -57,6 +56,7 @@ namespace MicrosoftStoreDownloader
                 Console.WriteLine("No .msixbundle files found for download.");
             }
         }
+
         private void KillWhatsappProcess()
         {
             try
@@ -84,22 +84,21 @@ namespace MicrosoftStoreDownloader
                 string url = "https://store.rg-adguard.net/api/GetFiles";
                 string postData = $"type=url&url={Uri.EscapeUriString($"https://www.microsoft.com/store/apps/{token}")}";
 
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-                request.Method = "POST";
-                request.ContentType = "application/x-www-form-urlencoded";
-
-                using (StreamWriter streamWriter = new StreamWriter(request.GetRequestStream()))
+                using (HttpClient httpClient = new HttpClient())
                 {
-                    streamWriter.Write(postData);
-                }
+                    var content = new StringContent(postData, System.Text.Encoding.UTF8, "application/x-www-form-urlencoded");
+                    var response = await httpClient.PostAsync(url, content);
 
-                WebResponse response = await request.GetResponseAsync();
-                using (StreamReader streamReader = new StreamReader(response.GetResponseStream()))
-                {
-                    this.response = streamReader.ReadToEnd();
+                    if (response.IsSuccessStatusCode)
+                    {
+                        this.response = await response.Content.ReadAsStringAsync();
+                        ParseLocations();
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Error: {response.StatusCode} - {response.ReasonPhrase}");
+                    }
                 }
-
-                ParseLocations();
             }
             catch (Exception ex)
             {
@@ -152,7 +151,6 @@ namespace MicrosoftStoreDownloader
 
         private string GetVersionFromFileName(string fileName)
         {
-            // Use a regular expression to extract the version from the file name
             string pattern = @"_(\d+\.\d+\.\d+\.\d+)_";
             Match match = Regex.Match(fileName, pattern);
             return match.Success ? match.Groups[1].Value : null;
@@ -165,9 +163,8 @@ namespace MicrosoftStoreDownloader
                 return false;
             }
 
-            if (File.Exists("last_version.txt"))
+            if (Registry.GetValue(@"HKEY_CURRENT_USER\Software\WhatsappUpdater", "LastVersion", null) is string existingVersion)
             {
-                string existingVersion = File.ReadAllText("last_version.txt");
                 return string.Compare(newVersion, existingVersion) > 0;
             }
 
@@ -176,51 +173,62 @@ namespace MicrosoftStoreDownloader
 
         private void RegisterVersion(string version)
         {
-            File.WriteAllText("last_version.txt", version);
+            Registry.SetValue(@"HKEY_CURRENT_USER\Software\WhatsappUpdater", "LastVersion", version);
         }
 
         private bool InstallAppx(string fileName)
         {
             try
             {
-                // Run the PowerShell command to install the application
                 string installCommand = $"Add-AppxPackage -Path .\\{fileName}";
                 Console.WriteLine($"Installing the application: {fileName}");
 
-                System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo
+                using (System.Diagnostics.Process process = new System.Diagnostics.Process())
                 {
-                    FileName = "powershell.exe",
-                    RedirectStandardInput = true,
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true,
-                    UseShellExecute = false,
-                    CreateNoWindow = true,
-                };
+                    System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo
+                    {
+                        FileName = "powershell.exe",
+                        RedirectStandardInput = true,
+                        RedirectStandardOutput = true,
+                        RedirectStandardError = true,
+                        UseShellExecute = false,
+                        CreateNoWindow = true,
+                    };
 
-                System.Diagnostics.Process process = new System.Diagnostics.Process
-                {
-                    StartInfo = psi
-                };
+                    process.StartInfo = psi;
+                    process.Start();
 
-                _ = process.Start();
-                process.StandardInput.WriteLine(installCommand);
-                process.StandardInput.WriteLine("exit");
-                process.WaitForExit();
+                    process.StandardInput.WriteLine(installCommand);
+                    process.StandardInput.WriteLine("exit");
+                    process.WaitForExit();
 
-                if (process.ExitCode == 0)
-                {
-                    return true;
-                }
-                else
-                {
-                    Console.WriteLine($"Error during installation. Exit code: {process.ExitCode}");
-                    return false;
+                    if (process.ExitCode == 0)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Error during installation. Exit code: {process.ExitCode}");
+                        return false;
+                    }
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error running PowerShell command: {ex.Message}");
                 return false;
+            }
+        }
+
+        private void DeleteMsixBundle(string fileName)
+        {
+            try
+            {
+                File.Delete(fileName);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error deleting the file: {ex.Message}");
             }
         }
 
@@ -235,10 +243,10 @@ namespace MicrosoftStoreDownloader
 
                     Console.WriteLine($"Downloading: {fileName}");
 
-                    using (WebClient webClient = new WebClient())
+                    using (HttpClient httpClient = new HttpClient())
                     {
-                        // Download the file with progress bar
-                        webClient.DownloadFile(downloadUrl, fileName);
+                        var content = httpClient.GetByteArrayAsync(downloadUrl).Result;
+                        File.WriteAllBytes(fileName, content);
                     }
                 }
                 catch (Exception ex)
