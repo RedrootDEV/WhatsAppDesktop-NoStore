@@ -25,6 +25,7 @@ namespace MicrosoftStoreDownloader
 
         public async Task StartDownloadAsync()
         {
+            await InstallDependencyAsync();
             await LoadAsync();
             AppxLocation msixBundleLocation = FindFirstMsixBundleLocation();
             if (msixBundleLocation != null)
@@ -253,6 +254,73 @@ namespace MicrosoftStoreDownloader
                 {
                     Console.WriteLine($"Error downloading the file: {ex.Message}");
                 }
+            }
+        }
+
+        private async Task InstallDependencyAsync()
+        {
+            // Dependencia 1
+            string dependencyUrl1 = "https://github.com/microsoft/microsoft-ui-xaml/releases/download/v2.8.5/Microsoft.UI.Xaml.2.8.x64.appx";
+            string dependencyFileName1 = "Microsoft.UI.Xaml.2.8.x64.appx";
+
+            Console.WriteLine($"Downloading dependency 1: {dependencyFileName1}");
+
+            try
+            {
+                using (HttpClient httpClient = new HttpClient())
+                {
+                    var content = await httpClient.GetByteArrayAsync(dependencyUrl1);
+                    File.WriteAllBytes(dependencyFileName1, content);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error downloading dependency 1: {ex.Message}");
+                return;
+            }
+
+            Console.WriteLine($"Installing dependency 1: {dependencyFileName1}");
+
+            if (InstallAppx(dependencyFileName1))
+            {
+                Console.WriteLine($"Dependency 1 installed successfully: {dependencyFileName1}");
+                DeleteMsixBundle(dependencyFileName1);
+            }
+            else
+            {
+                Console.WriteLine($"Error installing dependency 1: {dependencyFileName1}");
+            }
+
+            // Dependencia 2
+            string dependencyUrl2 = "https://github.com/QuestYouCraft/Microsoft-Store-UnInstaller/raw/master/Packages/Microsoft.NET.Native.Framework.2.2_2.2.29512.0_x64__8wekyb3d8bbwe.Appx";
+            string dependencyFileName2 = "Microsoft.NET.Native.Framework.2.2_2.2.29512.0_x64__8wekyb3d8bbwe.Appx";
+
+            Console.WriteLine($"Downloading dependency 2: {dependencyFileName2}");
+
+            try
+            {
+                using (HttpClient httpClient = new HttpClient())
+                {
+                    var content = await httpClient.GetByteArrayAsync(dependencyUrl2);
+                    File.WriteAllBytes(dependencyFileName2, content);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error downloading dependency 2: {ex.Message}");
+                return;
+            }
+
+            Console.WriteLine($"Installing dependency 2: {dependencyFileName2}");
+
+            if (InstallAppx(dependencyFileName2))
+            {
+                Console.WriteLine($"Dependency 2 installed successfully: {dependencyFileName2}");
+                DeleteMsixBundle(dependencyFileName2);
+            }
+            else
+            {
+                Console.WriteLine($"Error installing dependency 2: {dependencyFileName2}");
             }
         }
     }

@@ -20,3 +20,13 @@ C:\Users\Pablo\Desktop\Github\WhatsAppDesktop-NoStore\obj\Debug\WhatsappUpdater.
 C:\Users\Pablo\Desktop\Github\WhatsAppDesktop-NoStore\obj\Debug\WhatsappUpdater.csproj.CopyComplete
 C:\Users\Pablo\Desktop\Github\WhatsAppDesktop-NoStore\obj\Debug\WhatsappUpdater.exe
 C:\Users\Pablo\Desktop\Github\WhatsAppDesktop-NoStore\obj\Debug\WhatsappUpdater.pdb
+C:\Users\Pablo\Desktop\Repositorios\WhatsAppDesktop-NoStore\bin\Debug\WhatsappUpdater.exe.config
+C:\Users\Pablo\Desktop\Repositorios\WhatsAppDesktop-NoStore\bin\Debug\WhatsappUpdater.exe
+C:\Users\Pablo\Desktop\Repositorios\WhatsAppDesktop-NoStore\bin\Debug\WhatsappUpdater.pdb
+C:\Users\Pablo\Desktop\Repositorios\WhatsAppDesktop-NoStore\bin\Debug\HtmlAgilityPack.dll
+C:\Users\Pablo\Desktop\Repositorios\WhatsAppDesktop-NoStore\bin\Debug\HtmlAgilityPack.pdb
+C:\Users\Pablo\Desktop\Repositorios\WhatsAppDesktop-NoStore\bin\Debug\HtmlAgilityPack.xml
+C:\Users\Pablo\Desktop\Repositorios\WhatsAppDesktop-NoStore\obj\Debug\WhatsappUpdater.csproj.CoreCompileInputs.cache
+C:\Users\Pablo\Desktop\Repositorios\WhatsAppDesktop-NoStore\obj\Debug\WhatsappUpdater.csproj.CopyComplete
+C:\Users\Pablo\Desktop\Repositorios\WhatsAppDesktop-NoStore\obj\Debug\WhatsappUpdater.exe
+C:\Users\Pablo\Desktop\Repositorios\WhatsAppDesktop-NoStore\obj\Debug\WhatsappUpdater.pdb
